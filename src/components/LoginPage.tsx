@@ -9,7 +9,7 @@ export default function LoginPage() {
     const handleSubmit = async (event: React.FormEvent) => {
         event?.preventDefault()
         const userData = {username, password}
-        const API_URL = "vdfvfdv"
+        const API_URL = "https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/auth/login"
         try {
             console.log(userData);
             const response = await fetch(API_URL, {
@@ -19,18 +19,19 @@ export default function LoginPage() {
             },
             body: JSON.stringify(userData)
         });
-        console.log(response);
+        
         if (!response.ok) {
             throw new Error ("Zjebalo sie cos")
         }
-        const data = await response.json()
-        console.log(data)
+        const data = await response.json();
+        console.log(data);
         sessionStorage.setItem('token', data.token);
+        navigate('/namequiz')
         
         } catch (error) {
             console.log(error)
         }
-        navigate('/')
+
     }
 
     const handleClick = () => {
@@ -40,7 +41,7 @@ export default function LoginPage() {
     return (
         <section>
             Login:
-            <form onSubmit={handleSubmit} action="">
+            <form onSubmit={handleSubmit}>
                 Användarenamn:
                 <label htmlFor="username">
                     <input type="text"

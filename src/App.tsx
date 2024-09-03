@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import LeafletMap from './components/LeafletMap'
+import CreateQuiz from './components/CreateQuiz'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -8,7 +8,7 @@ function App() {
   return (
     <main>
       <h1>Quizpedia</h1>
-      <LeafletMap />
+      <CreateQuiz />
     </main>
   )
 }

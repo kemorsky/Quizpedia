@@ -1,66 +1,56 @@
 import 'leaflet/dist/leaflet.css';
+import { useState } from 'react';
 import leaflet, { Map } from 'leaflet';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
-export default function LeafletMap() {
+type LeafletMapProps = {
+    location: { latitude: string; longitude: string } | null;
+    setLocation: React.Dispatch<React.SetStateAction<{ latitude: string; longitude: string } | null>>;
+};
 
-    const [position, setPosition] = useState<GeolocationCoordinates>();
+export default function LeafletMap({ location, setLocation }: LeafletMapProps) {
     const [map, setMap] = useState<Map>();
 
-    function getPosition() {
-        if ('geolocation' in navigator && !position?.latitude) {
-          navigator.geolocation.getCurrentPosition((position) => {
-            setPosition(position.coords);
-          });
+    useEffect(() => {
+        if (!location && 'geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setLocation({
+                    latitude: position.coords.latitude.toString(),
+                    longitude: position.coords.longitude.toString(),
+                });
+            });
         }
-      }
-    
-      useEffect(() => {
-        if (!position?.latitude) {
-          getPosition();
+    }, [location, setLocation]);
+
+    useEffect(() => {
+        if (location && !map) {
+            const myMap = leaflet.map('map').setView([parseFloat(location.latitude), parseFloat(location.longitude)], 15);
+            setMap(myMap);
         }
-      }, []);
-    
-      useEffect(() => {
-        if (position?.latitude && !map) {
-          const myMap = leaflet
-            .map('map')
-            .setView([position?.latitude, position?.longitude], 15);
-    
-          setMap(myMap);
+    }, [location, map]);
+
+    useEffect(() => {
+        if (map && location) {
+            leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            }).addTo(map);
+
+            const marker = leaflet.marker([parseFloat(location.latitude), parseFloat(location.longitude)]).addTo(map);
+            marker.bindPopup('I live here');
+
+            map.on('click', (event) => {
+                console.log(event);
+                leaflet.marker([event.latlng.lat, event.latlng.lng]).addTo(map);
+            });
+
+            marker.on('click', () => {
+                console.log('Found me!');
+            });
         }
-      }, [position]);
-    
-      useEffect(() => {
-        if (map && position) {
-          leaflet
-            .tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              maxZoom: 19,
-              attribution:
-                '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            })
-            .addTo(map);
-    
-          const marker = leaflet
-            .marker([position?.latitude, position?.longitude])
-            .addTo(map);
-    
-          marker.bindPopup('I live here');
-    
-          map.on('click', (event) => {
-            console.log(event);
-            const marker = leaflet
-              .marker([event.latlng.lat, event.latlng.lng])
-              .addTo(map);
-          });
-    
-          marker.on('click', () => {
-            console.log('Found me!');
-          });
-        }
-      }, [map]);
-      
+    }, [map, location]);
+
     return (
-      <section id='map' style={{width: '60svw', height: '60svh'}}></section>  
-    )
+        <section id='map' style={{ width: '60svw', height: '60svh' }}></section>
+    );
 }
