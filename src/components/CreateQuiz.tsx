@@ -42,7 +42,7 @@ export default function CreateQuiz() {
         }
         console.log('Token:', token); // Debugging line
         const API_URL = "https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/quiz/question"
-        // Create questionData object matching the API structure
+        
         const questionData = {
             question,
             answer,
@@ -69,7 +69,6 @@ export default function CreateQuiz() {
         console.log('Server response:', data); // More detailed output
     
         if (!response.ok) {
-            // Improved error logging
             console.error('Error response:', {
                 status: response.status,
                 statusText: response.statusText,
@@ -102,7 +101,7 @@ export default function CreateQuiz() {
                 </label>
                 <button type='submit'>Spara</button>
             </form>
-            <LeafletMap location={location} setLocation={setLocation}/> {/* Pass location as prop */}
+            <LeafletMap location={location} setLocation={setLocation}/>
         </div>
     )
 }

@@ -31,7 +31,7 @@ export default function NameQuiz() {
         console.log('Server response:', data); // More detailed output
     
         if (!response.ok) {
-            console.log('Något gick fel :(', data.message); // Improved error logging
+            console.log('Något gick fel :(', data.message);
         } else {
             console.log('name sent', data);
             navigate('/main');

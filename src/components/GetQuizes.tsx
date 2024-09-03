@@ -40,7 +40,6 @@ export default function GetQuizes() {
         } catch (error) {
             console.error('Error during fetch:', error);
         }
-
     }
 
     return (
