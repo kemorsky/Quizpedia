@@ -12,6 +12,7 @@ interface Quiz {
     }[];
     userId: string;
     quizId: string;
+    username: string;
 }
 
 export default function GetQuizes() {
@@ -63,6 +64,7 @@ export default function GetQuizes() {
                     <article onClick={() => handleQuizClick(quiz.userId, quiz.quizId)} key={quiz.quizId}>
                         <h2>Quiz ID: {quiz.quizId}</h2>
                         <p>User ID: {quiz.userId}</p>
+                        <p>Username: {quiz.username}</p>
                         <section>
                             {quiz.questions.map((question, index) => (
                                 <p key={`${quiz.quizId}-${index}`}>
