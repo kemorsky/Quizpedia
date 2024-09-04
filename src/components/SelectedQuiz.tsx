@@ -44,6 +44,6 @@ export default function SelectedQuiz() {
     }
 
     return (
-
+        <div>Selected quiz</div>
     )
 }
