@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState } from "react"
 
 interface Quiz {
     quizId: string,
@@ -6,13 +7,13 @@ interface Quiz {
     username: string
 }
 
-export default function GetQuizes() {
+export default function SelectedQuiz() {
     const [quizzes, setQuizzes] = useState<Quiz[]>([])
     const renderQuizes = async (event: React.FormEvent) => {
         event.preventDefault()
         const token = sessionStorage.getItem('token');
         console.log('Token:', token); // Debugging line
-        const API_URL = "https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/quiz"
+        const API_URL = `https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/quiz/${userId}/${quizId}`;
         if (!token) {
             console.log('Token is not valid')
             return;
@@ -43,23 +44,6 @@ export default function GetQuizes() {
     }
 
     return (
-        <div>Quizes
-            <button onClick={renderQuizes}>Show quizzes</button>
-            <div >
-                {quizzes.length > 0 ? (
-                    quizzes.map((quiz, index) => (
-                        <div id='quiz' className="flex w-2/5 p-2 flex-col justify-center items-center bg-white" key={index}>
-                            <h3>Quiz namn: {quiz.quizId}</h3>
-                            <p>Användaren ID: {quiz.userId}</p>
-                            <p>Användarenamn: {quiz.username}</p>
-                            {/* Add other quiz properties you want to display */}
-                            <button>Visa</button>
-                        </div>
-                    ))
-                ) : (
-                    <p>No quizzes available</p>
-                )}
-            </div>
-        </div>
+
     )
 }

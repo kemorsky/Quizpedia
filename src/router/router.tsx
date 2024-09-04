@@ -4,6 +4,7 @@ import App from "../App"
 import SignUp from "../components/SignUp"
 import NameQuiz from "../components/NameQuiz";
 import GetQuizes from "../components/GetQuizes";
+import SelectedQuiz from "../components/SelectedQuiz";
 
 const router = createBrowserRouter ([
     {
@@ -19,9 +20,13 @@ const router = createBrowserRouter ([
     element: <NameQuiz/>
 },
 {
-    path: '/allquizes',
+    path: '/allquizzes',
     element: <GetQuizes/>
 },
+ {
+    path: '/selectedquiz',
+    element: <SelectedQuiz/>
+ },
 {
     path: "/main",
     element: <App/>
