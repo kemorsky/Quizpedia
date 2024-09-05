@@ -1,11 +1,15 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-  darkMode: false, // or 'media' or 'class'
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
-    extend: {},
-  },
-  variants: {
-    extend: {},
+    extend: {
+      width: {
+        '104': '24rem',
+        '128': '32rem', // Example of custom width (512px)
+      }
+    },
   },
   plugins: [],
 }

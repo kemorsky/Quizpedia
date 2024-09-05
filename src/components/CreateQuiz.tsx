@@ -193,14 +193,20 @@ export default function CreateQuiz() {
     navigate('/allquizzes');
   };
 
+  const handleClearing = () => {
+    setQuestion('');
+    setAnswer('');
+  }
+
   return (
     <>
-      <h1>{quizName}</h1>
-      <form onSubmit={handleSubmit}>
+      <h1 className='font-italic font-sans'>{quizName}</h1>
+      <form className='flex justify-between items-center mb-4 mt-4' onSubmit={handleSubmit}>
         <label>
           Fråga:
           <input
             type='text'
+            className='ml-2 bg-gray-600 rounded'
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             required
@@ -210,13 +216,14 @@ export default function CreateQuiz() {
           Svar:
           <input
             type='text'
+            className='ml-2 bg-gray-600 rounded'
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
             required
           />
         </label>
-        <button type='submit'>Spara din fråga</button>
-        <button type='button' onClick={handleNavigateToQuizzes}>Visa Alla quiz</button>
+        <button className="mt-2 bg-gray-900 rounded border-gray-300" type='submit' >Spara din fråga</button>
+        <button className="mt-2 bg-gray-900 rounded border-gray-300" type='button' onClick={handleNavigateToQuizzes}>Visa Alla quiz</button>
       </form>
       <LeafletMap
         onMapClick={handleMapClick}

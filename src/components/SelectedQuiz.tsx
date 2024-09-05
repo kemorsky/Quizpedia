@@ -1,53 +1,3 @@
-
-// import { useState } from "react"
-
-// interface Quiz {
-//     quizId: string,
-//     userId: string,
-//     username: string
-// }
-
-// export default function SelectedQuiz() {
-//     const [quizzes, setQuizzes] = useState<Quiz[]>([])
-//     const renderQuizes = async (event: React.FormEvent) => {
-//         event.preventDefault()
-//         const token = sessionStorage.getItem('token');
-//         console.log('Token:', token); // Debugging line
-//         const API_URL = `https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/quiz/${userId}/${quizId}`;
-//         if (!token) {
-//             console.log('Token is not valid')
-//             return;
-//         }
-
-//         try {
-//             const response = await fetch(API_URL, {
-//                 method: 'GET',
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                     'Authorization': `Bearer ${token}`
-//                 }
-//             })
-
-//         const data = await response.json();
-//         console.log('Server response:', data); // More detailed output
-    
-//         if (!response.ok) {
-//             console.log('Något gick fel :(', data.message); // Improved error logging
-//         } else {
-//             console.log('name sent', data);
-//             setQuizzes(data.quizzes)
-//         }
-        
-//         } catch (error) {
-//             console.error('Error during fetch:', error);
-//         }
-//     }
-
-//     return (
-//         <div>Selected quiz</div>
-//     )
-// }
-
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import leaflet from "leaflet";
@@ -123,11 +73,18 @@ function SelectedQuiz() {
             // Adding markers for all quiz questions
             if (mapRef.current) {
                 quiz.questions.forEach((question) => {
-                    leaflet.marker([question.location.latitude, question.location.longitude])
+                    const marker = leaflet.marker([question.location.latitude, question.location.longitude])
                         .addTo(mapRef.current)
-                        .bindPopup(question.question)
-                        .bindPopup(question.answer) // add hover so that the question appears on hover but when you click on it it shows the answer
-                        .openPopup();
+                       
+                        marker.bindTooltip(question.question, {
+                            permanent: false, // Only show on hover
+                            direction: 'top',
+                        });
+        
+                        // Popup for answer on click
+                        marker.on('click', () => {
+                            marker.bindPopup(`<b>Answer:</b> ${question.answer}`);
+                        });
                 });
             }
         }
@@ -147,19 +104,19 @@ function SelectedQuiz() {
 
 
     return (
-        <div>
+        <div className="flex flex-col justify-center items-center">
             <h1>Quiz ID: {quiz.quizId}</h1>
             <p>User ID: {quiz.userId}</p>
-            <section>
+            <section className="border rounded bg-gray-900 flex flex-col w-3/4 mb-4 text-left p-5 items-center">
                 {quiz.questions.map((question) => (
                     <article key={`${quiz.quizId}`}>
-                        <p>Question: {question.question}</p>
-                        <p>Answer: {question.answer}</p>
-                        <p>Location: ({question.location.latitude}, {question.location.longitude})</p>
+                        <p>Fråga: {question.question}</p>
+                        <p>Svar: {question.answer}</p>
+                        <p>Lokation: ({question.location.latitude}, {question.location.longitude})</p>
                     </article>
                 ))}
             </section>
-            <div id="thisMap" style={{ width: '60svw', height: '60svh' }} />
+            <div id="thisMap" style={{ width: '80svw', height: '80svh' }} />
         </div>
     );
 }
