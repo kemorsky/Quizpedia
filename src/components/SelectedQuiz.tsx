@@ -83,13 +83,15 @@ function SelectedQuiz() {
         
                         // Popup for answer on click
                         marker.on('click', () => {
-                            marker.bindPopup(`<b>Answer:</b> ${question.answer}`);
+                            marker.bindPopup(`
+                                <b>Answer:</b> ${question.answer} <br/>
+                                <b>Longitude:</b> ${marker.getLatLng().lng} <br/>
+                                <b>Latitude:</b> ${marker.getLatLng().lat}`)
                         });
                 });
             }
         }
 
-            // Cleanup map on unmount
             return () => {
                 if (mapRef.current) {
                     mapRef.current.remove();
@@ -105,9 +107,9 @@ function SelectedQuiz() {
 
     return (
         <div className="flex flex-col justify-center items-center">
-            <h1>Quiz ID: {quiz.quizId}</h1>
-            <p>User ID: {quiz.userId}</p>
-            <section className="border rounded bg-gray-900 flex flex-col w-3/4 mb-4 text-left p-5 items-center">
+            <h1 className="mb-2">Quiz ID: {quiz.quizId}</h1>
+            <h2 className="mb-4">User ID: {quiz.userId}</h2>
+            {/* <section className="border rounded bg-gray-900 flex flex-col w-3/4 mb-4 text-left p-5 items-center">
                 {quiz.questions.map((question) => (
                     <article key={`${quiz.quizId}`}>
                         <p>Fråga: {question.question}</p>
@@ -115,7 +117,7 @@ function SelectedQuiz() {
                         <p>Lokation: ({question.location.latitude}, {question.location.longitude})</p>
                     </article>
                 ))}
-            </section>
+            </section> */}
             <div id="thisMap" style={{ width: '80svw', height: '80svh' }} />
         </div>
     );

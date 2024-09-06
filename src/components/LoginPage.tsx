@@ -21,7 +21,7 @@ export default function LoginPage() {
         });
         
         if (!response.ok) {
-            throw new Error ("Zjebalo sie cos")
+            throw new Error ("Det blev paj")
         }
         const data = await response.json();
         console.log(data);

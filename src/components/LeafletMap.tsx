@@ -33,7 +33,6 @@ function LeafletMap({ onMapClick, savedMarkers}: LeafletMapProps) {
   const [previewMarker, setPreviewMarker] = useState<Marker | null>(null);
   const [userMarker, setUserMarker] = useState<Marker | null>(null);
 
-  // Hämtar aktuell position
   function getPosition() {
     if ('geolocation' in navigator && !position?.latitude) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -48,7 +47,6 @@ function LeafletMap({ onMapClick, savedMarkers}: LeafletMapProps) {
     }
   }, []);
 
-  // Initierar kartan och lägger till markörer
   useEffect(() => {
     if (position && !map) {
       const myMap = leaflet.map('map').setView([position.latitude, position.longitude], 15);
@@ -58,15 +56,12 @@ function LeafletMap({ onMapClick, savedMarkers}: LeafletMapProps) {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }).addTo(myMap);
 
-
-      // Lägg till postion för användaren
       const marker = leaflet.marker([position.latitude, position.longitude], { icon: customIcon })
         .addTo(myMap)
         .bindPopup('HÄR ÄR JAG!');
 
       setUserMarker(marker);
 
-      // Endast aktivera klick på kartan om det är Editable
       if ( onMapClick) {
         myMap.on('click', (event) => {
           const lat = event.latlng.lat;
@@ -86,17 +81,14 @@ function LeafletMap({ onMapClick, savedMarkers}: LeafletMapProps) {
     }
   }, [position, map, onMapClick,  previewMarker, userMarker]);
 
-  // Uppdaterar markörer
   useEffect(() => {
     if (map) {
-      // Tar bort markörer från kartan som inte har någon tillhörande fråga och svar sparad
       map.eachLayer((layer) => {
         if (layer instanceof leaflet.Marker && layer !== previewMarker && layer !== userMarker) {
           map.removeLayer(layer);
         }
       });
 
-      // Lägg till nya markörer
       savedMarkers.forEach((markerData) => {
         leaflet.marker([markerData.lat, markerData.lng], { icon: customIcon })
           .addTo(map)

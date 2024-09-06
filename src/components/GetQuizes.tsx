@@ -37,17 +37,17 @@ export default function GetQuizes() {
                 })
     
             const data = await response.json();
-            console.log('Server response:', data); // More detailed output
+            console.log('Server response:', data);
         
             if (!response.ok) {
-                console.log('Något gick fel :(', data.message); // Improved error logging
+                console.log('Något gick fel :(', data.message);
             } else {
                 console.log('name sent', data);
                 setQuizzes(data.quizzes)
             }
             
             } catch (error) {
-                console.error('Error during fetch:', error);
+                console.error('Fel medan fetch:', error);
             }
         } 
         renderQuizes()
@@ -61,7 +61,7 @@ export default function GetQuizes() {
     return (
         <main className='flex justify-center items-center flex-col'>
                 {quizzes.map((quiz) => (
-                    <article className="border rounded w-104 bg-gray-900 flex flex-col w-3/4 mb-4 p-5 items-start">
+                    <article className="border rounded w-104 bg-gray-900 flex flex-col w-108 mb-4 p-5 items-start">
                         <h2>Quiz ID: {quiz.quizId}</h2>
                         <p>User ID: {quiz.userId}</p>
                         <p>Username: {quiz.username}</p>
